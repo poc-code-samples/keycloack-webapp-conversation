@@ -20,6 +20,21 @@ const userNames = [
             createdDate: Date.now().valueOf()
         }],
 
+    },
+    { 
+        firstName: 'Jane', 
+        lastName: 'Doe', 
+        enabled: true, 
+        username: 'janedoe',
+        emailVerified: true,
+        email: 'jane@doe.com',
+        credentials: [{
+            userLabel: 'janedoe',
+            temporary: false,
+            value: 'ok123',
+            createdDate: Date.now().valueOf()
+        }],
+
     } 
 ];
 
