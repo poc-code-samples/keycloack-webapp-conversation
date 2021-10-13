@@ -6,12 +6,6 @@ Same schema applies for several users in this case the description is for single
 
 ![Diagram](docs/diagrams/out/auth/diagram.png)
 
-But the practical example will use 2 ng apps and 2 users.
-
-- Users belong to different realms, meaning user 1 can not access app2 and viceversa.
-
-- Users are registered in a keycloak server 
-
 
 ## Keycloack server run
 
@@ -29,6 +23,40 @@ Admin credentials:
 
 - username: *admin*
 - password: *admin*
+
+Make sure you set *admin/admin* as credentials th username and password are wired in the package.json for the keycloak:setup npm script to configure the keycloak server (se below)
+### Keycloack setup for the POC
+
+To prepare the keycloack server for this POC we nee to do the following:
+
+- create a realm
+- create the users in the realm
+- create the applications in the realm
+
+To accomplish these tasks you should run a script provided in the source code
+
+```bash
+$ npm run keycloack:setup
+```
+
+The output for this command will show you the realm that has been created for running the examples. 
+
+![output](./docs/output-keycloak-setup.png)
+
+If need to test the users you already created you can do thei following:
+
+- visit: http://localhost:8080/auth/realms/**replace your realm name here**/account
+- login using user credentials.
+    
+    - jonhdoe/ok123
+    - janedoe/ok123
+
+Your realm is in the output shown before, ej:
+
+```json
+{"enabled":true,"realm":"0978468e-390d-4a11-8963-38d0271cb033","displayName":"TestCompany-0978468e-390d-4a11-8963-38d0271cb033"}
+```
+
 
 **References**: [Keycloack docker documentation](https://www.keycloak.org/getting-started/getting-started-docker)
 

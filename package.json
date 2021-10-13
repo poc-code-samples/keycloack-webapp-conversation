@@ -5,6 +5,7 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
+    "keycloak:setup": "KEYCLOAK_ADMIN_PASSWORD=admin node setupKeycloak.js",
     "build": "npm run build:app1 && npm run build:app2",
     "build:app1": "cd ngApp1 && npm run build --prod",
     "build:app2": "cd ngApp2 && npm run build --prod",
