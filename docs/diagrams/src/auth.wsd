@@ -1,0 +1,49 @@
+@startuml
+skinparam BoxPadding 10
+
+title diagram
+
+actor user1 as u1
+
+box keycloack #SkyBlue
+participant keycloak as k
+end box
+
+box webapp #Snow
+participant landing as lp
+participant webapp as w
+participant ngApp1 as a1
+end box
+
+
+u1 -> w: http://example.com
+activate w
+w -> lp: redirect 
+deactivate w
+activate lp
+lp -> u1: html + js
+deactivate lp
+u1 -> k: redirect
+activate k
+k --> u1: login page
+deactivate k
+activate u1
+u1 -> u1: enter credentials and submit
+u1 -> k: credentials
+activate k
+activate w
+k -> k: validate credentials
+k -> w: http://example.com?token=jwt-token&redirect=example.com/app1
+w -> a1: redirect
+
+alt invalid credentials
+k -> w: http://localhost
+deactivate k
+w -> lp: redirect
+lp --> u1: invalid credentials 
+end
+deactivate w
+
+activate a1
+a1 --> u1: html + js angular app 1
+@enduml

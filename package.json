@@ -1,0 +1,22 @@
+{
+  "name": "static-and-ng-app",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm run build:app1 && npm run build:app2",
+    "build:app1": "cd ngApp1 && npm run build --prod",
+    "build:app2": "cd ngApp2 && npm run build --prod",
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Yosvel Reyes <yrfonfria@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "http-status-codes": "^2.1.4",
+    "uuid": "^8.3.2"
+  }
+}
