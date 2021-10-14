@@ -99,4 +99,5 @@ What's next:
 
 To invalidate your credentials need to delete these cookies living under http://localhost:8080
 
-- 
+- KEYCLOAK_IDENTITY_LEGACY
+- KEYCLOAK_IDENTITY

@@ -11,11 +11,11 @@
             var keycloak = new Keycloak();
             keycloak.init({
                 onLoad: 'login-required'
-            }).then(function(authenticated) {
+            }).then(authenticated => {
                 const el = document.getElementById('message');
                 el.innerHTML = authenticated ? 'authenticated' : 'not authenticated';
                 el.style.color = 'blue';
-            }).catch((e) => {
+            }).catch(e => {
                 console.log(e);
             });
         }
