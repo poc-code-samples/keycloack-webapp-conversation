@@ -66,3 +66,38 @@ Your realm is in the output shown before, ej:
 
 
 ## Client Authentication
+
+After keycloak setup completed do the followind steps:
+
+- login into keycloak admin console
+- locate the realm created using the id displayed in the console
+- go to the clients section
+- locate client with name "theClient"
+- go to the installation tab in client details and select JSON from the dropdown, then download the keycloak.json file
+- copy the downloaded file in the "landing" directory on this app
+
+Next step is run the webapp
+
+```bash
+$ npm run start
+```
+
+Navigate with your browser to http://localhost:8081
+
+You will be redirected automatically to keycloak login page. There you need to enter your credentials
+
+username: johndoe
+password: ok123
+
+Now you will be redirected back to your landing page and you will see you are authenticated
+
+What's next:
+
+- Find how to retrieve the token information from th webapp. JWT token live in a cookie under http://localhost:8080 domain. Notice we are serving our application in http://localhost:8081.
+
+- Figure out how to pass application information deom keycloak to the webapp, as needed to decide where to redirect to.
+
+To invalidate your credentials need to delete these cookies living under http://localhost:8080
+
+- KEYCLOAK_IDENTITY_LEGACY
+- KEYCLOAK_IDENTITY

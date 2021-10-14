@@ -16,7 +16,8 @@ export const DEFAULT_OPTIONS = {
 export const URIS = {
     token: '/auth/realms/master/protocol/openid-connect/token',
     realm: '/auth/admin/realms',
-    user:   '/auth/admin/realms/__REALM__/users'
+    user:   '/auth/admin/realms/__REALM__/users',
+    clients:   '/auth/admin/realms/__REALM__/clients'
 };
 
 export const DEFAULT_REALM_OPTIONS = {
