@@ -15,7 +15,6 @@ export const METHODS = {
 export const httpRequest = (options, payload) => {
 
     return new Promise((resolve, reject) => {
-        const data = typeof payload === Object ? JSON.stringify(payload) : payload
         let result = '';
 
         const req = request(options, response => {
@@ -36,7 +35,9 @@ export const httpRequest = (options, payload) => {
             reject(e);
         });
 
-        req.write(data);
+        if (payload)
+            req.write(payload);
+            
         req.end();
     });
 }

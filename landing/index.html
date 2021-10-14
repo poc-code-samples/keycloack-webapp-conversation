@@ -5,8 +5,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=100w, initial-scale=1.0">
     <title>Document</title>
+    <script type="javascript" src="http://localhost:8080/auth/js/keycloak.js"></script>
+    <script>
+        function initKeycloak() {
+            var keycloak = new Keycloak();
+            keycloak.init().then(function(authenticated) {
+                document.getElementById('message').innerHTML(authenticated ? 'authenticated' : 'not authenticated')
+            }).catch(function() {
+                alert('failed to initialize');
+            });
+        }
+    </script>
 </head>
-<body>
+<body onload="initKeycloak()">
     <h1>The landing page for my awesome website</h1>
+    <div id="message">User is not authenticated</div>
 </body>
 </html>
