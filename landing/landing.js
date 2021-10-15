@@ -21,13 +21,10 @@
             keycloak.init({
                 onLoad: 'login-required'
             }).then(authenticated => {
-                const msgElem = document.getElementById('message');
-                const tokenElem = document.getElementById('token');
-                msgElem.innerHTML = authenticated ? 'authenticated' : 'not authenticated';
-                msgElem.style.color = 'blue';
-                tokenElem.innerHTML = keycloak.token;
-                console.log(keycloak.token);
-                forwardToken(keycloak.token);
+                if (authenticated)
+                    forwardToken(keycloak.token);
+                else
+                    console.log(`Authentication failure`);
             }).catch(e => {
                 console.log(e);
             });
@@ -35,4 +32,3 @@
 
     initKeycloak();
 })();
-
