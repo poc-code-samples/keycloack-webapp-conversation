@@ -18,8 +18,18 @@ const memoryStore = session.MemoryStore();
 const keycloak = new Keycloak({ store: memoryStore });
 
 app.set('trust proxy', true);
+
+app.use(session({
+     secret: 'secret',
+     resave: false,
+     saveUninitialized: true,
+     store: memoryStore
+}));
+
 //install the keycloak middleware
 app.use(keycloak.middleware());
+
+
 
 // End keycloak setup
 
@@ -30,9 +40,9 @@ app.use(express.json());
 app.use('/app1', keycloak.protect(), express.static(path.join(documentRoot, 'ngApp1', 'dist', 'ngApp1')));
 
 
-app.use('/landing', express.static(path.join(documentRoot, 'landing')))
+// app.use('/landing', express.static(path.join(documentRoot, 'landing')))
 app.get('/', (_, res) => {
-     res.redirect('/landing');
+     res.redirect('/app1');
 });
 
 /**
