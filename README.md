@@ -101,3 +101,5 @@ To invalidate your credentials need to delete these cookies living under http://
 
 - KEYCLOAK_IDENTITY_LEGACY
 - KEYCLOAK_IDENTITY
+
+new changes
