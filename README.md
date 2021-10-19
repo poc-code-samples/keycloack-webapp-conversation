@@ -65,7 +65,7 @@ Your realm is in the output shown before, ej:
 **References**: [Keycloack docker documentation](https://www.keycloak.org/getting-started/getting-started-docker)
 
 
-## Client Authentication
+## Client Authentication frontend
 
 After keycloak setup completed do the followind steps:
 
@@ -101,3 +101,17 @@ To invalidate your credentials need to delete these cookies living under http://
 
 - KEYCLOAK_IDENTITY_LEGACY
 - KEYCLOAK_IDENTITY
+
+
+## Client authentication Backend
+
+Esto provee mejor integracion ademas de que los rescursos quedan protegidos en el backend. Cosa que con la solucion del frontend no se garantiza.
+
+Consideraciones
+
+- para que esta solucion funcione el access type en keycloak tiene que ser cambiado de *public* a *confidential*
+- se tiene que habilitar enable authorization
+- las credenciales tienen que estar en la configuracion de keycloak
+- se tiene que adicionar bearerOnly: false a la configuration.
+
+![enable authorization](docs/shot-keycloack-client-config.png)

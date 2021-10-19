@@ -1,5 +1,5 @@
 import { request } from 'http';
-import { INFO, log } from './logger.js';
+import { INFO, ERROR, log } from './logger.js';
 const POST = 'POST';
 const PUT = 'PUT';
 const DELETE = 'DELETE';

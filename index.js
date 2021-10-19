@@ -19,11 +19,21 @@ app.use(session({
      store: memoryStore
 }));
 
+const tokenMiddleware = (req, res, next) => {
+     console.log(req.session);
+     const kcData = JSON.parse(req.session['keycloak-token']);
+     res.cookie('token', kcData.access_token);
+     next();
+}
+
 const keycloak = new Keycloak({ store: memoryStore }, keycloakConfig);
 
 app.use(keycloak.middleware());
 app.use('/landing', express.static(path.join(documentRoot, 'landing')))
-app.use('/app1', keycloak.protect(), express.static(path.join(documentRoot, 'ngApp1', 'dist', 'ngApp1')));
+app.use('/app1', 
+     keycloak.protect(),
+     tokenMiddleware, 
+     express.static(path.join(documentRoot, 'ngApp1', 'dist', 'ngApp1')));
 app.get('/', (_, res) => {
      res.redirect('/app1');
 });
