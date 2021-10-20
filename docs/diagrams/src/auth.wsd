@@ -31,18 +31,18 @@ activate u1
 u1 -> u1: enter credentials and submit
 u1 -> k: credentials
 activate k
-activate w
+activate lp
 k -> k: validate credentials
-k -> w: http://example.com?token=jwt-token&redirect=example.com/app1
-w -> a1: redirect
+k -> lp: http://example.com?token=jwt-token
+lp -> a1: redirect
 
-alt invalid credentials
-k -> w: http://localhost
-deactivate k
-w -> lp: redirect
-lp --> u1: invalid credentials 
-end
-deactivate w
+' alt invalid credentials
+' k -> w: http://localhost
+' deactivate k
+' w -> lp: redirect
+' lp --> u1: invalid credentials 
+' end
+deactivate lp
 
 activate a1
 a1 --> u1: html + js angular app 1
