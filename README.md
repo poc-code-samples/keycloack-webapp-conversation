@@ -1,10 +1,10 @@
 # App Sample serving ng apps w/ user verification via static webpage
 
-Example to demostrate how to serve and angular application with authentication controlled by an external static page instead of integrate authentication in the angular app.
+Example to demostrate how to serve and angular application with authentication controlled by an external app instead of integrate authentication in the angular app.
 
 Same schema applies for several users in this case the description is for single user
 
-![Diagram](docs/diagrams/out/auth/diagram.png)
+![Diagram](docs/diagrams/out/auth/auth.png)
 
 
 ## Keycloack server run
@@ -62,9 +62,6 @@ If need to test the users you already created you can do thei following:
 
 Your realm is in the output shown before, ej:
 
-**References**: [Keycloack docker documentation](https://www.keycloak.org/getting-started/getting-started-docker)
-
-
 ## Client Authentication frontend
 
 After keycloak setup completed do the followind steps:
@@ -79,37 +76,56 @@ After keycloak setup completed do the followind steps:
 Next step is run the webapp
 
 ```bash
-$ npm run start
+$ npm run auth:frontend
 ```
 
 Navigate with your browser to http://localhost:8081
 
 You will be redirected automatically to keycloak login page. There you need to enter your credentials
 
-username: johndoe
-password: ok123
+- username: johndoe
+- password: ok123
 
 Now you will be redirected back to your landing page and you will see you are authenticated
 
 What's next:
 
-- Find how to retrieve the token information from th webapp. JWT token live in a cookie under http://localhost:8080 domain. Notice we are serving our application in http://localhost:8081.
-
-- Figure out how to pass application information deom keycloak to the webapp, as needed to decide where to redirect to.
+The token will appear in the `localStorage` under the key `kcToken`
 
 To invalidate your credentials need to delete these cookies living under http://localhost:8080
 
 - KEYCLOAK_IDENTITY_LEGACY
 - KEYCLOAK_IDENTITY
 
+### Pros
+
+- Tokens are handled in the frontend.
+- Redirects can be made in the frontend.
+
+### Cons
+
+- Keycloak library does not handle refresh token automatically.
+- For refreshing the token each webapp must include the keycloak client library.
+- Backend resources need to be protected by another mechanism, as this approach does not protect server resources.
+
 ## Client authentication Backend
 
-Keycloak setup for backend integration need to be tweaked as this:
+To run the app using backend authentication run follow the steps in teh Keycloak server run section above 
+
+Keycloak client setup for backend integration need to be tweaked using the console:
 
 - access type: change from *public* to *confidential*
 - enable authorization: *true*
+
+![enable authorization](docs/shot-keycloack-client-config.png)
+
+Then use the install tab to create the keycloak.json file. Adjust the keycloak.js config file according the values in the keycloak.json and make sure about this:
+
 - credentials must be in keycloak configuration
-- bearerOnly: *false* in keycloack configuration
+- bearerOnly: *false* in keycloack configuration if not there you should add it
+
+
+Once you finish configuration should look like this.
 
 ```javascript
 const config = {
@@ -126,14 +142,26 @@ const config = {
 };
 ```
 
-Here is a screenshot for client configuration in keycloak admin.
+Next run the webserver
 
-![enable authorization](docs/shot-keycloack-client-config.png)
+```bash
+$ npm run auth:backend
+```
+
+This command will run the webserver with keycloak authentication triggered in the backend.
+
+Browse `http://localhost:8081` you should be redirected inmediately to the login page. After you enter credentials
+
+- user: johndoe
+- password: ok123
+
+You should be redirected to the angular app, token will appear in a cookie in the angular app.
+
 
 ### Pros:
 
 - All authentication is handled by the Webapp (serverside).
-- Server side (ng Apps) are protected out of the box using `keycloak.protect()`
+- Server side resources (ng Apps) are protected out of the box using `keycloak.protect()`
 - No need to a landing page and client redirections.
 
 ### Cons
@@ -143,6 +171,20 @@ Here is a screenshot for client configuration in keycloak admin.
 - Webapp may be behing proxy that already validate tokens
 
 
-### Questions
+# Additional findings
 
-- Can envoy proxy validate the access token ?
+Ng Apps `base` meta has to be modified to match the specific route in the `app.use` express calls, otherwise the additional resources needed by the angular app will not be loaded properly and the app will not work.
+
+# Questions
+
+If we use Envoy as a router to services:
+
+- Can envoy proxy validate the access token for protecting backend services ?
+- Will webapp run as another backend service, meaning behind envoy ?
+
+
+# References
+
+- [Keycloack docker documentation](https://www.keycloak.org/getting-started/getting-started-docker)
+- [Keycloak javascript adapter documentation](https://www.keycloak.org/docs/latest/securing_apps/index.html#_javascript_adapter)
+- [Keycloak nodejs adapter documentation](https://www.keycloak.org/docs/latest/securing_apps/index.html#_nodejs_adapter)
