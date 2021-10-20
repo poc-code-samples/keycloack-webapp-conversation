@@ -30,7 +30,7 @@ const keycloak = new Keycloak({ store: memoryStore }, keycloakConfig);
 
 app.use(keycloak.middleware());
 app.use('/landing', express.static(path.join(documentRoot, 'landing')))
-app.use('/app1', 
+app.use('/app1',
      keycloak.protect(),
      tokenMiddleware, 
      express.static(path.join(documentRoot, 'ngApp1', 'dist', 'ngApp1')));
