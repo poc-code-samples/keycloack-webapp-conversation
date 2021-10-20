@@ -102,16 +102,47 @@ To invalidate your credentials need to delete these cookies living under http://
 - KEYCLOAK_IDENTITY_LEGACY
 - KEYCLOAK_IDENTITY
 
-
 ## Client authentication Backend
 
-Esto provee mejor integracion ademas de que los rescursos quedan protegidos en el backend. Cosa que con la solucion del frontend no se garantiza.
+Keycloak setup for backend integration need to be tweaked as this:
 
-Consideraciones
+- access type: change from *public* to *confidential*
+- enable authorization: *true*
+- credentials must be in keycloak configuration
+- bearerOnly: *false* in keycloack configuration
 
-- para que esta solucion funcione el access type en keycloak tiene que ser cambiado de *public* a *confidential*
-- se tiene que habilitar enable authorization
-- las credenciales tienen que estar en la configuracion de keycloak
-- se tiene que adicionar bearerOnly: false a la configuration.
+```javascript
+const config = {
+    "realm": "7078c9ad-4d44-4c58-bda1-c1ec6cace22b",
+    "auth-server-url": "http://localhost:8080/auth/",
+    "ssl-required": "external",
+    "resource": "theClient",
+    "​bearerOnly": false,
+    "credentials": {
+        "secret": "86f92594-6242-4cd2-b976-69daf9968b85"
+    },
+    "confidential-port": 0,
+    "policy-enforcer": {}
+};
+```
+
+Here is a screenshot for client configuration in keycloak admin.
 
 ![enable authorization](docs/shot-keycloack-client-config.png)
+
+### Pros:
+
+- All authentication is handled by the Webapp (serverside).
+- Server side (ng Apps) are protected out of the box using `keycloak.protect()`
+- No need to a landing page and client redirections.
+
+### Cons
+
+- Token refreshing need to be done by the Webapp (this may be complex because ng apps will have to talk to webapp to refresh tokens when these ones expire)
+- Webapp may be considered part of backend (not necesarily the bakend services the ng apps talk to perform business operations)
+- Webapp may be behing proxy that already validate tokens
+
+
+### Questions
+
+- Can envoy proxy validate the access token ?

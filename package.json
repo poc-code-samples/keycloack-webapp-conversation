@@ -9,7 +9,8 @@
     "build": "npm run build:express && npm run build:ng",
     "build:express": "npm i",
     "build:ng": "cd ngApp1 && npm i && npm run build --prod",
-    "start": "node index.js",
+    "start:frontend:keycloak": "node index.js",
+    "start:backend:keycloak": "node index-be.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
