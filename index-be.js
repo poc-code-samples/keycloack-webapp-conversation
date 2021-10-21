@@ -42,6 +42,7 @@ app.get('/refresh', async (req, res) => {
      const kcData = JSON.parse(req.session['keycloak-token']);
      const response = await keycloakApi.refreshToken(keyclockApiConfig, kcData.refresh_token);
      console.log('refresh', response);
+     req.session['keycloak-token'] = JSON.stringify(response);
      res.send(response);
 });
 
